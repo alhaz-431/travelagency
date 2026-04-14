@@ -2,7 +2,19 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-import firebaseConfigJson from "../../firebase-applet-config.json";
+
+// Try to import the config file, but don't fail if it's missing (e.g. on Vercel)
+let firebaseConfigJson: any = {};
+try {
+  // @ts-ignore
+  import("../../firebase-applet-config.json").then(config => {
+    firebaseConfigJson = config.default || config;
+  }).catch(() => {
+    console.warn("firebase-applet-config.json not found, using environment variables.");
+  });
+} catch (e) {
+  // Ignore
+}
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY || firebaseConfigJson.apiKey,
