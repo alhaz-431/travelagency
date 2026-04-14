@@ -110,7 +110,7 @@ export default function Login() {
               <Github className="mr-2 h-4 w-4" />
               Github
             </Button>
-            <Button variant="outline" type="button" disabled={loading}>
+            <Button variant="outline" type="button" disabled={loading} onClick={handleGoogleLogin}>
               <Mail className="mr-2 h-4 w-4" />
               Google
             </Button>

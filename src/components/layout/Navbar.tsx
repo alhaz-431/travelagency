@@ -84,6 +84,14 @@ export default function Navbar() {
                     </Link>
                   </DropdownMenuItem>
                 )}
+                {(user.role === 'admin' || user.role === 'manager') && (
+                  <DropdownMenuItem asChild className="rounded-lg">
+                    <Link to="/manager" className="flex items-center">
+                      <LayoutDashboard className="mr-2 h-4 w-4" />
+                      Manager Panel
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem 
                   className="text-destructive rounded-lg focus:bg-destructive/10 focus:text-destructive"
                   onClick={() => logout()}

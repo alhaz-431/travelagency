@@ -15,18 +15,24 @@ import FeaturedSpots from "@/components/home/FeaturedSpots";
 import VideoSpotlight from "@/components/home/VideoSpotlight";
 import TouristSpots from "@/pages/TouristSpots";
 import SpotDetail from "@/pages/SpotDetail";
+import Flights from "@/pages/Flights";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import AdminDashboard from "@/pages/AdminDashboard";
+import ManagerDashboard from "@/pages/ManagerDashboard";
 import UserBookings from "@/pages/UserBookings";
 import Support from "@/pages/Support";
 
-const ProtectedRoute = ({ children, role }: { children: React.ReactNode, role?: string }) => {
+const ProtectedRoute = ({ children, role }: { children: React.ReactNode, role?: string | string[] }) => {
   const { user, loading } = useAuth();
   
   if (loading) return <div className="h-screen flex items-center justify-center">Loading...</div>;
   if (!user) return <Navigate to="/login" />;
-  if (role && user.role !== role) return <Navigate to="/" />;
+  
+  if (role) {
+    const roles = Array.isArray(role) ? role : [role];
+    if (!roles.includes(user.role)) return <Navigate to="/" />;
+  }
   
   return <>{children}</>;
 };
@@ -50,12 +56,19 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/spots" element={<TouristSpots />} />
               <Route path="/spots/:id" element={<SpotDetail />} />
+              <Route path="/flights" element={<Flights />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               
               <Route path="/admin" element={
                 <ProtectedRoute role="admin">
                   <AdminDashboard />
+                </ProtectedRoute>
+              } />
+
+              <Route path="/manager" element={
+                <ProtectedRoute role={["admin", "manager"]}>
+                  <ManagerDashboard />
                 </ProtectedRoute>
               } />
               
