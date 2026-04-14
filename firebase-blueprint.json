@@ -1,0 +1,46 @@
+{
+  "entities": {
+    "users": {
+      "title": "User Profile",
+      "description": "Stores user profile information and roles.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "manager", "passenger"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "bookings": {
+      "title": "Booking",
+      "description": "Stores flight and tour bookings.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "spotId": { "type": "string" },
+        "spotName": { "type": "string" },
+        "date": { "type": "string" },
+        "passengers": { "type": "number" },
+        "totalPrice": { "type": "number" },
+        "paymentMethod": { "type": "string" },
+        "transactionId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "spotId", "status"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "users",
+      "description": "User profile documents."
+    },
+    "bookings/{bookingId}": {
+      "schema": "bookings",
+      "description": "Booking records."
+    }
+  }
+}
